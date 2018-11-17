@@ -5,13 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-<<<<<<< HEAD:MALACFE/app/src/main/res/layout/content_signature.xml
-    tools:showIn="@layout/activity_signature"
-    tools:context=".SignatureActivity">
-=======
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
->>>>>>> master:MALACFE/app/src/main/res/layout/content_main.xml
 
     <ImageView
         android:id="@+id/mImageView"
