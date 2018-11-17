@@ -7,4 +7,5 @@
     <string name="hint_cancel">Cancel</string>
     <string name="hint_clear">Clear</string>
     <string name="hint_save">Save</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>
