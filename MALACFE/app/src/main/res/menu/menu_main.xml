@@ -1,9 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+<<<<<<< HEAD
     tools:context="malac.com.malacfe.SignatureActivity" >
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
+=======
+    tools:context="malac.com.malacfe.MainActivity">
+    <item
+        android:id="@+id/action_settings"
+>>>>>>> master
         android:orderInCategory="100"
+        android:title="@string/action_settings"
         app:showAsAction="never" />
 </menu>

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MALACFE</string>
     <string name="action_settings">Settings</string>
+<<<<<<< HEAD
     <string name="hello_world">Hello world!</string>
     <string name="hint_sign">Get Signature</string>
     <string name="dialog_title">SIGN HERE</string>
@@ -8,4 +9,7 @@
     <string name="hint_clear">Clear</string>
     <string name="hint_save">Save</string>
     <string name="title_activity_main">MainActivity</string>
+=======
+    <string name="todo">TODO</string>
+>>>>>>> master
 </resources>
