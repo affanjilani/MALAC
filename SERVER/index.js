@@ -1,7 +1,7 @@
 const express = require('express')
 var bodyParser = require('body-parser');
 var multer  = require('multer');
-var upload = multer(); 
+//var upload = multer(); 
 var path = require('path');
 var fs = require('fs');
 
@@ -34,9 +34,9 @@ app.post('/upload', upload.any(), (req, res) => {
 	console.log("hello")
 	console.log(req.files[0]);
 
-	var tmpPath = req.files[0].originalname;
+	var tmpPath = req.files[0].path;
 
-	var target_path = 'passport_pictures/' + req.files[0].originalname;
+	var target_path = 'uploads/' + req.files[0].originalname;
 
 	//Save file
 	var src= fs.createReadStream(tmpPath);
@@ -44,9 +44,9 @@ app.post('/upload', upload.any(), (req, res) => {
 	console.log('print')
 
 	src.pipe(dest);
-    src.on('end', () => { 
-    	res.send("ok"); });
-    src.on('error', (err) => { res.send({error: "upload failed"}); });
+  src.on('end', () => { 
+    	res.send({a:"ok"}); });
+  src.on('error', (err) => { console.log(err); res.send({error: "upload failed"}); });
 
 	
 	//Send the response from the checks
