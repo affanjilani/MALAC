@@ -4,6 +4,7 @@ import imutils
 import dlib
 import cv2
 from imutils import face_utils
+from violaJones import ViolaJonesSD
 
 
 
@@ -29,7 +30,7 @@ def neutralFace(image, models):
 
 		#now convert the dlib rectangle to the (x,y,width, height) rectangles we like in python
 		(x,y,width,height) = face_utils.rect_to_bb(rect)
-		cv2.rectangle(image, (x,y), (x+width, y+height), (0,255,0),2)
+		#cv2.rectangle(image, (x,y), (x+width, y+height), (0,255,0),2)
 
 		# loop over the (x, y)-coordinates for the facial landmarks
 		# and draw them on the image
@@ -57,11 +58,27 @@ def neutralFace(image, models):
 		#check if mouth is open
 		if(not isMouthOpen(shape,blurredImage)):
 			print 'Mouth open'
-			return 'Mouth is open!!!!!'
+			#return 'Mouth is open!!!!!'
 
 		# (secx,secy) = shape[62]
 		# cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
 		# cv2.circle(image,(secx,secy),1,(255,0,0),-1)
+
+		(xwtv,ylow) = shape[50]
+		(xlow,ywtv) = shape[48]
+		(xwtv2,yhigh) = shape[57]
+		(xhigh,ywtv2) = shape[54]
+
+		#blur the image
+		#blurredImage = cv2.GaussianBlur(gray,3,0.5)
+		roi_gray = gray[ylow-10:yhigh+10,xlow-10:xhigh+10]
+		cv2.imshow("hello",roi_gray)
+
+		if(ViolaJonesSD(gray)):
+			print 'Smile'
+			return 'Do not be happy'
+		else:
+			print 'thanks for not smiling'
 		
 
 
@@ -77,23 +94,25 @@ def isMouthOpen(featurePoints,image):
 
 	#blur the image
 	#blurredImage = cv2.GaussianBlur(gray,3,0.5)
-	mouthOpenSection = image[ymouth-10:ymouth+10,xmouth-10:xmouth+10]
+	mouthOpenSection = image[ymouth-25:ymouth+25,xmouth-25:xmouth+25]
 	height,width = mouthOpenSection.shape
 	laplacian = cv2.Laplacian(mouthOpenSection,cv2.CV_64F)
-	sobely = cv2.Sobel(mouthOpenSection,cv2.CV_64F,0,1,ksize=5)
-	print laplacian[height/2+1-3:height/2+1+3,11]
-	print laplacian[11,11]
-	print sobely[height/2+1-3:height/2+1+3,11]
-	print sobely[11,11]
-	if(abs(laplacian[11,11]-laplacian[10,11])>=14 or featurePoints[66,1]-featurePoints[62,1]>3 ):
+	# sobely = cv2.Sobel(mouthOpenSection,cv2.CV_64F,0,1,ksize=5)
+	# print laplacian[height/2+1-3:height/2+1+3,11]
+	# print laplacian[11,11]
+	# print sobely[height/2+1-3:height/2+1+3,11]
+	# print sobely[11,11]
+	#print abs(laplacian[11,11]-laplacian[10,11])
+	if(abs(laplacian[11,11]-laplacian[10,11])>=13 or featurePoints[66,1]-featurePoints[62,1]>7 ):
 		# (secx,secy) = featurePoints[62]
 		# cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
 		# cv2.circle(image,(secx,secy),1,(255,0,0),-1)
-		# print abs(laplacian[11,11]-laplacian[10,11])
+		#print abs(laplacian[11,11]-laplacian[10,11])
 		# print featurePoints[66,1]-featurePoints[62,1]
 		return False
 	else:
 		return True
 
 
-neutralFace('./testImages/1.jpg','./shape_predictor_68_face_landmarks.dat')
+
+neutralFace('./testImages/bae_smiling.jpg','./shape_predictor_68_face_landmarks.dat')
