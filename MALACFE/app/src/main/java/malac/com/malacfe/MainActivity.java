@@ -20,7 +20,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.loopj.android.http.*;
+//import com.loopj.android.http.*;
+
+//Testing ion
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.Future;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
@@ -35,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mCurrentPhotoPath;
-    public static final String UPLOAD_URL = ;
-    public static final String GET_URL =;
+    /*public static final String UPLOAD_URL = ;
+    public static final String GET_URL =;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,29 +139,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void send(View view) {
+        System.out.println("HERE");
         post();
         get();
 
-        if(SUCCESS_CASE_RESPONSE) {
+        if(true) {
             Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
             startActivity(intent);
             finish();
         }
         else {
-            Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), STRING_JSON_PASRSED_RESPONSE_ERROR, Snackbar.LENGTH_SHORT)
+            Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), "fool", Snackbar.LENGTH_SHORT)
                     .setAction("Action", null).show();
         }
     }
 
     public void post() {
         try {
-            String uploadId = UUID.randomUUID().toString();
+            /*String uploadId = UUID.randomUUID().toString();
 
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(mCurrentPhotoPath, "passport_photo") //Adding file
                     .setNotificationConfig(new UploadNotificationConfig())
-                    .startUpload(); //Starting the upload
+                    .startUpload(); //Starting the upload*/
+            Ion.with(getApplicationContext())
+                    .load("http://" + "localhost" + ":8000/verifyImage")
+                    .setMultipartParameter("name", "source")
+                    .setMultipartFile("image", "image/jpeg", new File(mCurrentPhotoPath))
+                    .asJsonObject()
+                    .setCallback(new FutureCallback<JsonObject>() {
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result) {
+                            System.out.println(result.toString());
+                            //do stuff with result
+                        }
+                    });
+
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }

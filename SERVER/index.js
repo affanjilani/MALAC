@@ -1,5 +1,7 @@
 const express = require('express')
 var bodyParser = require('body-parser');
+var multer  = require('multer');
+var upload = multer();
 
 
 const app = express();
@@ -14,7 +16,7 @@ app.get('/', (req, res) => {
 app.post('/verifyImage', upload.any(), (req, res) => {
 	console.log(req.files);
 	 res.setHeader('Content-Type', 'application/json');
-	res.send(json.stringify({a:'OK'}));
+	res.send({success:true , a:'OK'});
 })
 
 app.listen(8000, () => {
