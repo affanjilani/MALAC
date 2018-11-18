@@ -20,8 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-//import com.loopj.android.http.*;
-
 //Testing ion
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -29,14 +27,10 @@ import com.koushikdutta.async.future.Future;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -148,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onCompleted(Exception e, JsonObject result) {
                             System.out.println(result.toString());
                             //do stuff with result
-                            if(result.getAsBoolean() == true) {
+                            if(result.getAsBoolean()) {
                                 Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
                                 startActivity(intent);
                                 finish();
