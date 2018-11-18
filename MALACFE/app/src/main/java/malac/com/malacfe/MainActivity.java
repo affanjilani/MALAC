@@ -142,13 +142,13 @@ public class MainActivity extends AppCompatActivity {
                         public void onCompleted(Exception e, JsonObject result) {
                             System.out.println(result.toString());
                             //do stuff with result
-                            if(result.getAsBoolean()) {
+                            if(true) {
                                 Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
                             else {
-                                Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), result.toString(), Snackbar.LENGTH_SHORT)
+                                Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), result.toString(), Snackbar.LENGTH_LONG)
                                         .setAction("Action", null).show();
                             }
                         }
