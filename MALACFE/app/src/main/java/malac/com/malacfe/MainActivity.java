@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mCurrentPhotoPath;
-    /*public static final String UPLOAD_URL = ;
-    public static final String GET_URL =;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,30 +137,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void send(View view) {
-        System.out.println("HERE");
-        post();
-        get();
-
-        if(true) {
-            Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), "fool", Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show();
-        }
-    }
-
-    public void post() {
         try {
-            /*String uploadId = UUID.randomUUID().toString();
-
-            //Creating a multi part request
-            new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
-                    .addFileToUpload(mCurrentPhotoPath, "passport_photo") //Adding file
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .startUpload(); //Starting the upload*/
             Ion.with(getApplicationContext())
                     .load("http://" + "localhost" + ":8000/verifyImage")
                     .setMultipartParameter("name", "source")
@@ -173,15 +148,20 @@ public class MainActivity extends AppCompatActivity {
                         public void onCompleted(Exception e, JsonObject result) {
                             System.out.println(result.toString());
                             //do stuff with result
+                            if(result.getAsBoolean() == true) {
+                                Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), result.toString(), Snackbar.LENGTH_SHORT)
+                                        .setAction("Action", null).show();
+                            }
                         }
                     });
 
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void get() {
-        // GET A RESPONSE FROM THE SERVER THAT SAYS IF THE IMAGE WAS GOOD OR NOT. IF NOT RETURNS WHY IT WAS NOT
     }
 }
