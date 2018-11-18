@@ -55,10 +55,10 @@ def neutralFace(image, models):
 		# 	cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
 		# 	cv2.circle(image,(secx,secy),1,(255,0,0),-1)
 
-		#check if mouth is open
-		if(not isMouthOpen(shape,blurredImage)):
-			print 'Mouth open'
-			#return 'Mouth is open!!!!!'
+		# #check if mouth is open
+		# if(not isMouthOpen(shape,blurredImage)):
+		# 	print 'Mouth open'
+		# 	#return 'Mouth is open!!!!!'
 
 		# (secx,secy) = shape[62]
 		# cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
@@ -74,11 +74,13 @@ def neutralFace(image, models):
 		roi_gray = gray[ylow-10:yhigh+10,xlow-10:xhigh+10]
 		cv2.imshow("hello",roi_gray)
 
-		if(ViolaJonesSD(gray)):
-			print 'Smile'
-			return 'Do not be happy'
-		else:
-			print 'thanks for not smiling'
+		# if(ViolaJonesSD(gray)):
+		# 	print 'Smile'
+		# 	#return 'Do not be happy'
+		# else:
+		# 	print 'thanks for not smiling'
+
+		# isWeirdEyebrow(shape,gray)
 		
 
 
@@ -89,30 +91,71 @@ def neutralFace(image, models):
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
-def isMouthOpen(featurePoints,image):
-	(xmouth,ymouth) = featurePoints[66]
+# def isMouthOpen(featurePoints,image):
+# 	(xmouth,ymouth) = featurePoints[66]
 
-	#blur the image
-	#blurredImage = cv2.GaussianBlur(gray,3,0.5)
-	mouthOpenSection = image[ymouth-25:ymouth+25,xmouth-25:xmouth+25]
-	height,width = mouthOpenSection.shape
-	laplacian = cv2.Laplacian(mouthOpenSection,cv2.CV_64F)
-	# sobely = cv2.Sobel(mouthOpenSection,cv2.CV_64F,0,1,ksize=5)
-	# print laplacian[height/2+1-3:height/2+1+3,11]
-	# print laplacian[11,11]
-	# print sobely[height/2+1-3:height/2+1+3,11]
-	# print sobely[11,11]
-	#print abs(laplacian[11,11]-laplacian[10,11])
-	if(abs(laplacian[11,11]-laplacian[10,11])>=13 or featurePoints[66,1]-featurePoints[62,1]>7 ):
-		# (secx,secy) = featurePoints[62]
-		# cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
-		# cv2.circle(image,(secx,secy),1,(255,0,0),-1)
-		#print abs(laplacian[11,11]-laplacian[10,11])
-		# print featurePoints[66,1]-featurePoints[62,1]
-		return False
-	else:
-		return True
+# 	#blur the image
+# 	#blurredImage = cv2.GaussianBlur(gray,3,0.5)
+# 	mouthOpenSection = image[ymouth-25:ymouth+25,xmouth-25:xmouth+25]
+# 	height,width = mouthOpenSection.shape
+# 	laplacian = cv2.Laplacian(mouthOpenSection,cv2.CV_64F)
+# 	# sobely = cv2.Sobel(mouthOpenSection,cv2.CV_64F,0,1,ksize=5)
+# 	# print laplacian[height/2+1-3:height/2+1+3,11]
+# 	# print laplacian[11,11]
+# 	# print sobely[height/2+1-3:height/2+1+3,11]
+# 	# print sobely[11,11]
+# 	#print abs(laplacian[11,11]-laplacian[10,11])
+# 	if(abs(laplacian[11,11]-laplacian[10,11])>=13 or featurePoints[66,1]-featurePoints[62,1]>7 ):
+# 		# (secx,secy) = featurePoints[62]
+# 		# cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
+# 		# cv2.circle(image,(secx,secy),1,(255,0,0),-1)
+# 		#print abs(laplacian[11,11]-laplacian[10,11])
+# 		# print featurePoints[66,1]-featurePoints[62,1]
+# 		return False
+# 	else:
+# 		return True
+
+# def isWeirdEyebrow(featurePoints,image):
+# 	height,width = image.shape
+
+# 	(x1,y1) = featurePoints[21]
+# 	(x2,y2) = featurePoints[20]
+# 	(x3,y3) = featurePoints[19]
+
+# 	(x4,y4) = featurePoints[22]
+# 	(x5,y5) = featurePoints[23]
+# 	(x6,y6) = featurePoints[24]
+
+# 	#Get the eye position
+# 	(ex1,ey1) = featurePoints[37]
+# 	(ex2,ey2) = featurePoints[38]
+
+# 	(ex3,ey3) = featurePoints[43]
+# 	(ex4,ey4) = featurePoints[44]
+
+
+# 	rightbrowPoint = max(y1,y2,y3)
+# 	print rightbrowPoint
+# 	leftbrowPoint = max(y4,y5,y6)
+
+# 	leftEyePoint = min(ey3,ey4)
+# 	rightEyePoint = min(ey1,ey1)
+# 	print rightEyePoint
+
+# 	a = (rightEyePoint-rightbrowPoint)/float(height)
+# 	print 'diff'
+# 	print a
+# 	(nosex,nosey) = featurePoints[27]
+# 	b = (nosey - rightbrowPoint)/float(height)
+# 	print b
+
+# 	threshold = 25
+
+# 	if((rightEyePoint-rightbrowPoint)/height <threshold or (leftEyePoint-rightbrowPoint)<threshold):
+# 		return False
+# 	else:
+# 		return True
 
 
 
-neutralFace('./testImages/bae_smiling.jpg','./shape_predictor_68_face_landmarks.dat')
+neutralFace('./testImages/frown.jpg','./shape_predictor_68_face_landmarks.dat')
