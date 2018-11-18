@@ -26,6 +26,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation files('/Users/chrispanaritis/Desktop/Projects/MALAC/MALACFE/android-async-http-1.4.9.jar')
+    implementation 'com.android.support:support-annotations:27.1.1'
     implementation 'net.gotev:uploadservice:2.1'
+    implementation 'com.koushikdutta.ion:ion:2.+'
 }

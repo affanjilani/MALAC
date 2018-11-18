@@ -20,23 +20,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.loopj.android.http.*;
-
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
+//Testing ion
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.Future;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mCurrentPhotoPath;
-    public static final String UPLOAD_URL = ;
-    public static final String GET_URL =;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,35 +131,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void send(View view) {
-        post();
-        get();
-
-        if(SUCCESS_CASE_RESPONSE) {
-            Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else {
-            Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), STRING_JSON_PASRSED_RESPONSE_ERROR, Snackbar.LENGTH_SHORT)
-                    .setAction("Action", null).show();
-        }
-    }
-
-    public void post() {
         try {
-            String uploadId = UUID.randomUUID().toString();
+            Ion.with(getApplicationContext())
+                    .load("http://" + "localhost" + ":8000/upload")
+                    .setMultipartParameter("name", "source")
+                    .setMultipartFile("image", "image/jpeg", new File(mCurrentPhotoPath))
+                    .asJsonObject()
+                    .setCallback(new FutureCallback<JsonObject>() {
+                        @Override
+                        public void onCompleted(Exception e, JsonObject result) {
+                            System.out.println(result.toString());
+                            //do stuff with result
+                            if(true) {
+                                Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), result.toString(), Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        }
+                    });
 
-            //Creating a multi part request
-            new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
-                    .addFileToUpload(mCurrentPhotoPath, "passport_photo") //Adding file
-                    .setNotificationConfig(new UploadNotificationConfig())
-                    .startUpload(); //Starting the upload
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void get() {
-        // GET A RESPONSE FROM THE SERVER THAT SAYS IF THE IMAGE WAS GOOD OR NOT. IF NOT RETURNS WHY IT WAS NOT
     }
 }

@@ -12,3 +12,4 @@ venv.bak/
 .AppleDouble
 .LSOverride
 *.pyc
+node_modules/

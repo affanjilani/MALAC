@@ -2,6 +2,7 @@ package malac.com.malacfe;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -112,7 +113,9 @@ public class SignatureActivity extends AppCompatActivity {
                 dialog.dismiss();
                 Toast.makeText(getApplicationContext(), "Successfully Saved", Toast.LENGTH_SHORT).show();
                 // Calling the same class
-                recreate();
+                Intent intent = new Intent(SignatureActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
         mCancel.setOnClickListener(new View.OnClickListener() {
