@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mCurrentPhotoPath;
-    public static final String UPLOAD_URL = ;
-    public static final String GET_URL =;
+   // public static final String UPLOAD_URL = ;
+    //public static final String GET_URL =;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

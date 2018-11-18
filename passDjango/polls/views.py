@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import UploadFileForm
 
-
+'''
 def getImage(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -12,6 +12,6 @@ def getImage(request):
             return HttpResponseRedirect('/success/url/') # Change this to send to mobile and maybe JSON form
     else:
         form = UploadFileForm()
-    return render(request, 'upload.html', {'form': form})
+    return render(request, 'upload.html', {'form': form})'''
 
 # Create your views here.

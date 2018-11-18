@@ -12,3 +12,5 @@ venv.bak/
 .AppleDouble
 .LSOverride
 *.pyc
+*.idea
+MALCAFE/*.idea
