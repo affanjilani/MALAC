@@ -14,8 +14,6 @@ def sharpnessBlur(grayImage,threshold):
 
     #check if we meet our criteria
     if blurred:
-        print "WRONG FORMAT"
         return False
     else:
-        print "ACCEPTED FORMAT"
         return True

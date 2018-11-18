@@ -14,7 +14,7 @@ def faceDetection1(grayImage,dpi):
 
     try:
         # detect the face using Viola Jones algorithm and find the region
-        region = ViolaJonesFD(grayImage)
+        (region,x,y,w,h) = ViolaJonesFD(grayImage)
 
         #next we run canny edge detection
         binaryImage = cannyEdgeDetection(region,(7,7),1.5,20,60)
@@ -27,6 +27,7 @@ def faceDetection1(grayImage,dpi):
 
         #equation to convert pixels to mm
         length = round(height * (inchToMillimeters/dpi))
+        length = float(length)/ 2
 
         #check if the length matches the criteria which is between 31mm and 36mm
         if 31 < length and length < 36:
@@ -53,20 +54,16 @@ def faceDetection1(grayImage,dpi):
             bothEdges = True
 
         if bothEdges and crownToChin:
-            print ("ACCEPTED FORMAT")
             return True
         else:
-            print("WRONG FORMAT")
             return False
 
     except:
 
     # check if we meet face detection criteria 1
         if bothEdges and crownToChin:
-            print ("ACCEPTED FORMAT")
             return True
         else:
-            print("WRONG FORMAT")
             return False
 
 """Function that compute edge detection using Canny. it takes in a grayscale image, 
