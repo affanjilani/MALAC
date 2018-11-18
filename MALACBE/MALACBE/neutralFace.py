@@ -33,13 +33,67 @@ def neutralFace(image, models):
 
 		# loop over the (x, y)-coordinates for the facial landmarks
 		# and draw them on the image
+
 		for (x, y) in shape:
 			cv2.circle(image, (x, y), 1, (0, 0, 255), -1)
+		(xmouth,ymouth) = shape[66]
+
+		# #blur the image
+		blurredImage = cv2.GaussianBlur(gray,(3,3),0.5)
+		# mouthOpenSection = gray[ymouth-10:ymouth+10,xmouth-10:xmouth+10]
+		# height,width = mouthOpenSection.shape
+		# print height/2-2
+		# laplacian = cv2.Laplacian(mouthOpenSection,cv2.CV_64F)
+		# sobely = cv2.Sobel(mouthOpenSection,cv2.CV_64F,0,1,ksize=5)
+		# print laplacian[height/2+1-3:height/2+1+3,11]
+		# print laplacian[11,11]
+		# print sobely[height/2+1-3:height/2+1+3,11]
+		# print sobely[11,11]
+		# if(abs(laplacian[11,11])+abs(laplacian[10,11])>=13 or shape[67,1]-shape[63,1]>3 ):
+		# 	(secx,secy) = shape[62]
+		# 	cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
+		# 	cv2.circle(image,(secx,secy),1,(255,0,0),-1)
+
+		#check if mouth is open
+		if(not isMouthOpen(shape,blurredImage)):
+			print 'Mouth open'
+			return 'Mouth is open!!!!!'
+
+		# (secx,secy) = shape[62]
+		# cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
+		# cv2.circle(image,(secx,secy),1,(255,0,0),-1)
+		
+
+
+
  
-		# show the output image with the face detections + facial landmarks
-		cv2.imshow("Output", image)
-		cv2.waitKey(0)
-		cv2.destroyAllWindows()
+	# show the output image with the face detections + facial landmarks
+	cv2.imshow("Output", image)
+	cv2.waitKey(0)
+	cv2.destroyAllWindows()
+
+def isMouthOpen(featurePoints,image):
+	(xmouth,ymouth) = featurePoints[66]
+
+	#blur the image
+	#blurredImage = cv2.GaussianBlur(gray,3,0.5)
+	mouthOpenSection = image[ymouth-10:ymouth+10,xmouth-10:xmouth+10]
+	height,width = mouthOpenSection.shape
+	laplacian = cv2.Laplacian(mouthOpenSection,cv2.CV_64F)
+	sobely = cv2.Sobel(mouthOpenSection,cv2.CV_64F,0,1,ksize=5)
+	print laplacian[height/2+1-3:height/2+1+3,11]
+	print laplacian[11,11]
+	print sobely[height/2+1-3:height/2+1+3,11]
+	print sobely[11,11]
+	if(abs(laplacian[11,11]-laplacian[10,11])>=14 or featurePoints[66,1]-featurePoints[62,1]>3 ):
+		# (secx,secy) = featurePoints[62]
+		# cv2.circle(image,(xmouth,ymouth),1,(255,0,0),-1)
+		# cv2.circle(image,(secx,secy),1,(255,0,0),-1)
+		# print abs(laplacian[11,11]-laplacian[10,11])
+		# print featurePoints[66,1]-featurePoints[62,1]
+		return False
+	else:
+		return True
 
 
-neutralFace('./testImages/jackie.jpg','./shape_predictor_68_face_landmarks.dat')
+neutralFace('./testImages/1.jpg','./shape_predictor_68_face_landmarks.dat')
