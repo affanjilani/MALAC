@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     public void send(View view) {
         try {
             Ion.with(getApplicationContext())
-                    .load("http://" + "localhost" + ":8000/verifyImage")
+                    .load("http://" + "localhost" + ":8000/upload")
                     .setMultipartParameter("name", "source")
                     .setMultipartFile("image", "image/jpeg", new File(mCurrentPhotoPath))
                     .asJsonObject()
