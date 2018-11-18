@@ -1,34 +1,42 @@
 package malac.com.malacfe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.loopj.android.http.*;
+
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String mCurrentPhotoPath;
+    public static final String UPLOAD_URL = ;
+    public static final String GET_URL =;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,67 +132,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void send(View view) {
-        // Get image
+        post();
+        get();
 
-
-        String text = "";
-        BufferedReader reader=null;
-
-        // Send data
-        try
-        {
-
-            // Defined URL  where to send data
-            URL url = new URL("/media/webservice/httppost.php");
-
-            // Send POST data request
-
-            URLConnection conn = url.openConnection();
-            conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write( data );
-            wr.flush();
-
-            // Get the server response
-
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            // Read Server Response
-            while((line = reader.readLine()) != null)
-            {
-                // Append server response in string
-                sb.append(line + "\n");
-            }
-
-            text = sb.toString();
-        }
-        catch(Exception ex)
-        {
-
-        }
-        finally
-        {
-            try
-            {
-                reader.close();
-            }
-
-            catch(Exception ex) {}
-
-            // Show response on activity
-            content.setText(text);
-        }
-
-        if(true) {
+        if(SUCCESS_CASE_RESPONSE) {
             Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
             startActivity(intent);
             finish();
         }
         else {
-            Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), "Invalid photo. Please retake photo.", Snackbar.LENGTH_SHORT)
+            Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), STRING_JSON_PASRSED_RESPONSE_ERROR, Snackbar.LENGTH_SHORT)
                     .setAction("Action", null).show();
         }
+    }
+
+    public void post() {
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            //Creating a multi part request
+            new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
+                    .addFileToUpload(mCurrentPhotoPath, "passport_photo") //Adding file
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .startUpload(); //Starting the upload
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void get() {
+        // GET A RESPONSE FROM THE SERVER THAT SAYS IF THE IMAGE WAS GOOD OR NOT. IF NOT RETURNS WHY IT WAS NOT
     }
 }
