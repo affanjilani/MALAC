@@ -23,6 +23,17 @@
     <include layout="@layout/content_main" />
 
     <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="@dimen/fab_margin"
+        android:onClick="send"
+        android:text="Send Photo"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/colorPrimaryDark" />
+
+    <Button
         android:id="@+id/retake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
