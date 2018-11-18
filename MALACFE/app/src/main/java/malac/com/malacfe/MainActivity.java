@@ -6,13 +6,18 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -32,17 +37,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         dispatchTakePictureIntent();
-    }
+        }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -80,29 +76,6 @@ public class MainActivity extends AppCompatActivity {
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
-    }
-
-    private void setPic() {
-        ImageView mImageView = (ImageView) findViewById(R.id.mImageView);
-        // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        mImageView.setImageBitmap(bitmap);
     }
 
     @Override
@@ -145,6 +118,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void retake(View view) {
-        dispatchTakePictureIntent();
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void send(View view) {
+
+        if(true) {
+            Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            Snackbar.make(((ViewGroup) (findViewById(android.R.id.content))).getChildAt(0), "Invalid photo. Please retake photo.", Snackbar.LENGTH_SHORT)
+                    .setAction("Action", null).show();
+        }
     }
 }
