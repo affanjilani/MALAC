@@ -124,6 +124,58 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void send(View view) {
+        // Get image
+
+
+        String text = "";
+        BufferedReader reader=null;
+
+        // Send data
+        try
+        {
+
+            // Defined URL  where to send data
+            URL url = new URL("/media/webservice/httppost.php");
+
+            // Send POST data request
+
+            URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write( data );
+            wr.flush();
+
+            // Get the server response
+
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            // Read Server Response
+            while((line = reader.readLine()) != null)
+            {
+                // Append server response in string
+                sb.append(line + "\n");
+            }
+
+            text = sb.toString();
+        }
+        catch(Exception ex)
+        {
+
+        }
+        finally
+        {
+            try
+            {
+                reader.close();
+            }
+
+            catch(Exception ex) {}
+
+            // Show response on activity
+            content.setText(text);
+        }
 
         if(true) {
             Intent intent = new Intent(MainActivity.this, SignatureActivity.class);
